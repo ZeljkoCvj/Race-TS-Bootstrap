@@ -1,0 +1,47 @@
+.input-group {
+  margin-top: 2rem;
+}
+
+.input-group > .form-control {
+  border: 2px solid black;
+  box-shadow: none;
+}
+.input-group > .input-group-append > .btn {
+  box-shadow: none;
+  border: 2px solid black;
+
+  background-color: gray;
+}
+.btnn {
+  margin-top: 2rem;
+  border-radius: 20px;
+  padding: 3px 20px;
+  background-color: gray;
+  cursor: pointer;
+}
+
+.list-group {
+  margin-top: 2rem;
+}
+.list-group-item {
+  border: none;
+  cursor: pointer;
+  padding: 1rem 0rem;
+  transition: 0.7s;
+}
+.list-group-item:hover {
+  color: gray;
+  transition: 0.7s;
+  font-size: 20px;
+  width: 21%;
+}
+.container-fluid {
+  margin-top: 3rem;
+  text-align: center;
+  padding: 0px 0px;
+}
+.border {
+  border-radius: 20px;
+
+  border: 2px solid black !important;
+}
