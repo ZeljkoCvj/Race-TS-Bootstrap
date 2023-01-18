@@ -22,16 +22,16 @@
 
 .list-group {
   margin-top: 2rem;
+  visibility: hidden;
 }
 .list-group-item {
   border: none;
   cursor: pointer;
   padding: 1rem 0rem;
-  transition: 0.7s;
 }
 .list-group-item:hover {
   color: gray;
-  transition: 0.7s;
+
   font-size: 20px;
   width: 21%;
 }
@@ -44,4 +44,35 @@
   border-radius: 20px;
 
   border: 2px solid black !important;
+}
+.is-valid:focus {
+  box-shadow: none;
+  outline: none !important;
+}
+input.is-valid {
+  border-color: green;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: none;
+}
+.form-control.is-valid:focus {
+  box-shadow: none;
+}
+.align-self-center {
+  color: gray;
+  margin-top: 5rem;
+}
+.notifi {
+  visibility: hidden;
+  border: 2px solid black;
+  position: absolute;
+  top: 12rem;
+  right: 72rem;
+  width: 14%;
+
+  border-radius: 20px;
+  padding: 2px 5px;
+  text-align: center;
+  background-color: rgba(99, 97, 97, 0.411);
 }

@@ -9,8 +9,9 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <link href="./style.css" rel="stylesheet" />
-    <script src="./script.js" defer></script>
+    <script src="./dist/script.js" defer></script>
     <script src="./car.json"></script>
     <script src="./dist/fawesome.js" defer></script>
     <script src="./tostify.js"></script>
@@ -35,6 +36,23 @@
         </div>
       </div>
       <button type="button" class="btnn">Imena</button>
+      <div class="notifi" aria-live="polite" aria-atomic="true">
+        <div class="toast" id="myToast">
+          <div class="toast-header">
+            <button
+              type="button"
+              class="ml-2 mb-1 close"
+              data-dismiss="toast"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">Text je kopiran!</div>
+        </div>
+      </div>
+      <div class="content"></div>
+
       <ul class="list-group">
         <li class="list-group-item">Rivera Clarke</li>
         <li class="list-group-item">Guadalupe Garza</li>
@@ -43,7 +61,8 @@
         <li class="list-group-item">Taylor Massey</li>
         <li class="list-group-item">Salazar Hurley</li>
       </ul>
-      <div class="container-fluid">
+
+      <!--<div class="container-fluid">
         <div class="row">
           <div class="col-md-4 p-2">
             <div class="border border-black">
@@ -52,7 +71,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </body>
 </html>
