@@ -66,6 +66,7 @@ class nameRace {
 class inputFilter extends Validate {
     constructor() {
         super(document.querySelector(".form-control"));
+        this.filterItems = this.filterItems;
         this.dataContener = document.querySelector(".content");
         this.divEl = document.querySelector(".align-self-center");
         this.input.addEventListener("input", this.filterData.bind(this));
@@ -79,7 +80,7 @@ class inputFilter extends Validate {
             this.filterItems = data.filter((item) => item.name.toLowerCase().includes(inputText));
         });
         this.filterItems.map((item) => {
-            console.log(item.name);
+            // console.log(item.name);
         });
     }
 }

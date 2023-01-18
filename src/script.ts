@@ -82,6 +82,7 @@ class inputFilter extends Validate {
 
   constructor() {
     super(document.querySelector(".form-control")! as HTMLInputElement);
+    this.filterItems = this.filterItems;
     this.dataContener = document.querySelector(".content")! as HTMLDivElement;
     this.divEl = document.querySelector(
       ".align-self-center"
@@ -106,16 +107,9 @@ class inputFilter extends Validate {
         );
       });
 
-    this.filterItems.map(
-      (item: {
-        name: string;
-        picture: string;
-        brzina: number;
-        opis: string;
-      }) => {
-        console.log(item.name);
-      }
-    );
+    this.filterItems.map((item: any) => {
+      // console.log(item.name);
+    });
   }
 }
 
