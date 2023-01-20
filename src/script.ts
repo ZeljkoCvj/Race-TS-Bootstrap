@@ -1,3 +1,9 @@
+interface Car {
+  name: string;
+  picture: string;
+  brzina: number;
+  opis: string;
+}
 class Validate {
   protected input: HTMLInputElement;
 
@@ -33,12 +39,12 @@ class nameRace {
   element: HTMLDivElement;
   namec: HTMLUListElement;
   notify: HTMLDivElement;
-  close: HTMLDivElement;
+
   constructor(element: HTMLDivElement) {
     this.element = element;
     this.namec = document.querySelector(".list-group")! as HTMLUListElement;
     this.notify = document.querySelector(".notifi")! as HTMLDivElement;
-    this.close = document.querySelector(".ml-2")! as HTMLDivElement;
+
     this.bindEvents();
     this.copyName();
   }
@@ -53,7 +59,7 @@ class nameRace {
     });
 
     this.element.addEventListener("click", () => {
-      this.namec.style.visibility = "visible";
+      this.namec.style.display = "flex";
     });
   }
   private copyName() {
@@ -61,14 +67,11 @@ class nameRace {
     name.forEach((item: any) => {
       item.addEventListener("click", () => {
         navigator.clipboard.writeText(item.textContent);
-        this.element.innerHTML = "Imena";
-        this.namec.style.visibility = "hidden";
-        this.notify.style.visibility = "visible";
-        this.close.addEventListener("click", () => {
-          this.notify.style.visibility = "hidden";
-        });
+        this.element.innerHTML = "Text je kopiran";
+        this.namec.style.display = "none";
+
         setTimeout(() => {
-          this.notify.style.visibility = "hidden";
+          this.element.innerHTML = "Imena";
         }, 500);
       });
     });
@@ -76,42 +79,108 @@ class nameRace {
 }
 
 class inputFilter extends Validate {
-  private dataContener: HTMLDivElement;
-  private divEl: HTMLDivElement;
+  protected dataContener: HTMLDivElement;
+  private contHolder: HTMLDivElement;
+  private btn: HTMLButtonElement;
   private filterItems: any;
 
   constructor() {
     super(document.querySelector(".form-control")! as HTMLInputElement);
     this.filterItems = this.filterItems;
-    this.dataContener = document.querySelector(".content")! as HTMLDivElement;
-    this.divEl = document.querySelector(
-      ".align-self-center"
+
+    this.dataContener = document.querySelector(
+      ".contentHolder"
     )! as HTMLDivElement;
+    this.contHolder = document.querySelector(".race")! as HTMLDivElement;
     this.input.addEventListener("input", this.filterData.bind(this));
+    this.btn = document.querySelector(".butn")! as HTMLButtonElement;
   }
 
-  private filterData() {
-    const inputText = this.input.value.toLowerCase();
+  public filterData() {
     this.dataContener.innerHTML = "";
 
-    fetch("car.json")
-      .then((Response) => Response.json())
-      .then((data) => {
-        this.filterItems = data.filter(
-          (item: {
-            name: string;
-            picture: string;
-            brzina: number;
-            opis: string;
-          }) => item.name.toLowerCase().includes(inputText)
-        );
-      });
+    const inputText = this.input.value.toLowerCase();
 
-    this.filterItems.map((item: any) => {
-      // console.log(item.name);
+    if (inputText) {
+      fetch("car.json")
+        .then((response: Response) => {
+          return response.json();
+        })
+        .then((data: any) => {
+          this.filterItems = data.filter((item: Car) => {
+            return item.name.toLowerCase().includes(inputText);
+          });
+          if (inputText && this.filterItems) {
+            this.filterItems.map((item: Car) => {
+              const domElement = document.createElement("div");
+              domElement.classList.add("car");
+              const front = document.createElement("div");
+              front.classList.add("front");
+              const back = document.createElement("div");
+              back.classList.add("back");
+              domElement.appendChild(front);
+              domElement.appendChild(back);
+              front.innerHTML = `${item.name} <img src="${item.picture}">`;
+              back.innerHTML = `${item.brzina} km ${item.opis} <img src="${item.picture}">`;
+              this.dataContener.appendChild(domElement);
+              this.choseDriver(domElement, item);
+            });
+          }
+        })
+        .catch((error: Error) => {
+          console.error(error);
+        });
+    }
+  }
+
+  private choseDriver(_domElement: any, item: any) {
+    _domElement.addEventListener("click", () => {
+      this.btn.setAttribute("style", " visibility: visible;");
+      this.dataContener.innerHTML = "";
+      const carImg = document.createElement("img");
+      carImg.src = item.picture;
+      const cars = document.createElement("p");
+      cars.style.transition = "1s";
+      cars.classList.add("raceCar");
+      cars.appendChild(carImg);
+
+      this.contHolder.setAttribute("style", " visibility: visible;");
+      this.contHolder.appendChild(cars);
+
+      this.input.value = "";
+      if (this.contHolder.children.length === 6) {
+        document.getElementById("notification")!.style.display = "block";
+
+        setTimeout(() => {
+          document.getElementById("notification")!.style.display = "none";
+        }, 1500);
+        cars.remove();
+      }
+
+      this.removeCar(cars);
+      if (this.contHolder.children.length < 0) {
+        this.contHolder.style.display = "none";
+        this.contHolder.style.transition = "0s";
+      }
+    });
+  }
+
+  private removeCar(cars: any) {
+    const removemvEl = document.createElement("button");
+    removemvEl.innerHTML = "x";
+    removemvEl.classList.add("buttonn");
+    cars.appendChild(removemvEl);
+
+    removemvEl.addEventListener("click", () => {
+      cars.remove();
+
+      if (this.contHolder.children.length === 0) {
+        this.contHolder.style.visibility = "hidden";
+        this.contHolder.style.transition = "0s";
+        this.btn.style.visibility = "hidden";
+      }
     });
   }
 }
-
 const inpt = new inputFilter();
 const nameR = new nameRace(document.querySelector(".btnn")! as HTMLDivElement);

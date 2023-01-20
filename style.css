@@ -1,3 +1,6 @@
+.container {
+  position: relative;
+}
 .input-group {
   margin-top: 2rem;
 }
@@ -26,8 +29,10 @@
 
 .list-group {
   margin-top: 2rem;
-  visibility: hidden;
   position: relative;
+}
+#dispay {
+  display: none;
 }
 .list-group .list-group-item {
   border: none;
@@ -41,9 +46,10 @@
   width: 21%;
 }
 .container-fluid {
-  margin-top: 3rem;
   text-align: center;
   padding: 0px 0px;
+  margin-top: 3rem;
+  width: 100%;
 }
 
 .form-control.is-invalid:focus {
@@ -56,15 +62,118 @@
   color: gray;
   margin-top: 5rem;
 }
-.notifi {
-  display: flex;
-  visibility: hidden;
+
+.car {
+  transform-style: preserve-3d;
+  transition: all 2s ease;
+  position: relative;
+  text-align: center;
+  font-size: 25px;
+  height: 150px;
+  border-radius: 10px;
   border: 2px solid black;
+  cursor: pointer;
+  transition: all 1s ease-out;
+}
+.car:hover {
+  transform: rotateX(180deg);
+}
+.car img {
+  display: block;
+  margin: 0 auto;
+  height: 107px;
+  background: none;
+  transition: 1s;
+}
+
+.front {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 20%;
-  border-radius: 20px;
-  background-color: rgba(112, 102, 102, 0.486);
-  justify-content: center;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+
+  border-radius: 10px;
+}
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: rgb(31, 26, 26);
+  transform: rotateX(180deg);
+  border-radius: 10px;
+  color: white;
+}
+.contentHolder {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-top: 4rem;
+  transition: 1s;
+}
+.butn {
+  visibility: hidden;
+  float: right;
+  margin-top: 3rem;
+  padding: 3px 20px;
+  border-radius: 10px;
+  background-color: rgb(9, 27, 27);
+  color: white;
+}
+.raceCar {
+  border-bottom: 2px solid black;
+  padding: 10px 20px;
+  position: relative;
+  width: 100%;
+  height: 110px;
+}
+.race {
+  position: relative;
+  display: flex;
+  margin-top: 2rem;
+  border: 2px solid black;
+  border-radius: 10px;
+  visibility: hidden;
+  flex-direction: column-reverse;
+}
+.race p:first-child {
+  border-bottom: none;
+  height: 87px;
+}
+
+.race p img {
+  width: 150px;
+  padding: 2px;
+}
+
+.raceCar img {
+  position: absolute;
+  left: 0%;
+  max-width: 50%;
+  top: 0px;
+}
+.buttonn {
+  float: right;
+  background-color: transparent;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  z-index: 10;
+}
+.alert {
+  margin-top: 2rem !important;
+  display: none;
+}
+
+@media only screen and (max-width: 880px) {
+  .contentHolder {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .contentHolder {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

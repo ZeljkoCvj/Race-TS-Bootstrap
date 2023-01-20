@@ -18,55 +18,40 @@
   </head>
   <body>
     <div class="container">
-      <div class="row">
-        <div class="col-lg-12 offset-lg-12">
-          <div class="input-group">
-            <input
-              class="form-control"
-              placeholder="Unesi ime vozaca"
-              id="exampleInput"
-              type="text"
-            />
-            <div class="input-group-append">
-              <button class="btn btn-secondary">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
+      <div class="offset-lg-12">
+        <div class="input-group">
+          <input
+            class="form-control"
+            placeholder="Unesi ime vozaca"
+            id="exampleInput"
+            type="text"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-secondary">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
           </div>
         </div>
       </div>
+
       <button type="button" class="btnn">Imena</button>
 
-      <div class="content"></div>
-
-      <ul class="list-group">
+      <ul class="list-group" id="dispay">
         <li class="list-group-item">Rivera Clarke</li>
         <li class="list-group-item">Guadalupe Garza</li>
         <li class="list-group-item">Higgins Lindsay</li>
         <li class="list-group-item">Short Obrien</li>
         <li class="list-group-item">Taylor Massey</li>
         <li class="list-group-item">Salazar Hurley</li>
-        <div class="notifi" aria-live="polite" aria-atomic="true">
-          <button
-            type="button"
-            class="ml-2 mb-1 close"
-            data-dismiss="toast"
-            aria-label="Close"
-          ></button>
-
-          <div class="copy">Text je kopiran!</div>
-        </div>
       </ul>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-4 p-2">
-            <!-- <div class="border border-black">
-              <img src="image1.jpg" alt="image1" class="img-fluid" />
-              <p>Column 1 text</p>
-            </div> -->
-          </div>
-        </div>
+      <div id="notification" class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> Nije moguce izabrati vise od 5 vozila
       </div>
+
+      <div class="contentHolder"></div>
+      <div class="race"></div>
+
+      <button class="butn">Start</button>
     </div>
   </body>
 </html>
