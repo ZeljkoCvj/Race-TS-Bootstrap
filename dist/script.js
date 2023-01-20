@@ -143,6 +143,22 @@ class inputFilter extends Validate {
         });
     }
 }
-const inpt = new inputFilter();
+class startRace extends inputFilter {
+    constructor() {
+        super();
+        this.namec = document.querySelector(".btnn");
+        this.startRace();
+    }
+    startRace() {
+        this.btn.addEventListener("click", () => {
+            this.btn.innerHTML = "Pocnite novu trku";
+            this.input.placeholder =
+                "Posele pocetka trke nije moguce pretrazivati nove vozace!";
+            this.input.classList.add("is-invalid");
+            this.namec.style.visibility = "hidden";
+        });
+    }
+}
+const inpt = new startRace();
 const nameR = new nameRace(document.querySelector(".btnn"));
 //# sourceMappingURL=script.js.map

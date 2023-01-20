@@ -30,7 +30,7 @@ class Validate {
     });
   }
 
-  private getInputValue(): string {
+  private getInputValue() {
     return this.input.value;
   }
 }
@@ -81,7 +81,7 @@ class nameRace {
 class inputFilter extends Validate {
   protected dataContener: HTMLDivElement;
   private contHolder: HTMLDivElement;
-  private btn: HTMLButtonElement;
+  protected btn: HTMLButtonElement;
   private filterItems: any;
 
   constructor() {
@@ -165,7 +165,7 @@ class inputFilter extends Validate {
     });
   }
 
-  private removeCar(cars: any) {
+  public removeCar(cars: any) {
     const removemvEl = document.createElement("button");
     removemvEl.innerHTML = "x";
     removemvEl.classList.add("buttonn");
@@ -182,5 +182,26 @@ class inputFilter extends Validate {
     });
   }
 }
-const inpt = new inputFilter();
+
+class startRace extends inputFilter {
+  namec: HTMLDivElement;
+
+  constructor() {
+    super();
+
+    this.namec = document.querySelector(".btnn")! as HTMLDivElement;
+
+    this.startRace();
+  }
+  private startRace() {
+    this.btn.addEventListener("click", () => {
+      this.btn.innerHTML = "Pocnite novu trku";
+      this.input.placeholder =
+        "Posele pocetka trke nije moguce pretrazivati nove vozace!";
+      this.input.classList.add("is-invalid");
+      this.namec.style.visibility = "hidden";
+    });
+  }
+}
+const inpt = new startRace();
 const nameR = new nameRace(document.querySelector(".btnn")! as HTMLDivElement);
