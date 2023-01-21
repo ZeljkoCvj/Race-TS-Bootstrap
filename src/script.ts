@@ -80,9 +80,10 @@ class nameRace {
 
 class inputFilter extends Validate {
   protected dataContener: HTMLDivElement;
-  private contHolder: HTMLDivElement;
+  protected contHolder: HTMLDivElement;
   protected btn: HTMLButtonElement;
-  private filterItems: any;
+
+  public filterItems: any;
 
   constructor() {
     super(document.querySelector(".form-control")! as HTMLInputElement);
@@ -112,7 +113,7 @@ class inputFilter extends Validate {
           });
           if (inputText && this.filterItems) {
             this.filterItems.map((item: Car) => {
-              const domElement = document.createElement("div");
+              let domElement = document.createElement("div");
               domElement.classList.add("car");
               const front = document.createElement("div");
               front.classList.add("front");
@@ -124,6 +125,7 @@ class inputFilter extends Validate {
               back.innerHTML = `${item.brzina} km ${item.opis} <img src="${item.picture}">`;
               this.dataContener.appendChild(domElement);
               this.choseDriver(domElement, item);
+              return { domElement, item };
             });
           }
         })
@@ -133,13 +135,15 @@ class inputFilter extends Validate {
     }
   }
 
-  private choseDriver(_domElement: any, item: any) {
-    _domElement.addEventListener("click", () => {
+  public choseDriver(domElement: HTMLDivElement, item: Car) {
+    domElement.addEventListener("click", () => {
       this.btn.setAttribute("style", " visibility: visible;");
       this.dataContener.innerHTML = "";
       const carImg = document.createElement("img");
+
       carImg.src = item.picture;
-      const cars = document.createElement("p");
+      let cars = document.createElement("p");
+
       cars.style.transition = "1s";
       cars.classList.add("raceCar");
       cars.appendChild(carImg);
@@ -157,21 +161,23 @@ class inputFilter extends Validate {
         cars.remove();
       }
 
-      this.removeCar(cars);
       if (this.contHolder.children.length < 0) {
         this.contHolder.style.display = "none";
         this.contHolder.style.transition = "0s";
       }
+      this.removeCar(cars);
+      return cars;
     });
   }
 
-  public removeCar(cars: any) {
-    const removemvEl = document.createElement("button");
-    removemvEl.innerHTML = "x";
-    removemvEl.classList.add("buttonn");
-    cars.appendChild(removemvEl);
+  public removeCar(cars: HTMLParagraphElement) {
+    let removeEl = document.createElement("button");
 
-    removemvEl.addEventListener("click", () => {
+    removeEl.innerHTML = "x";
+    removeEl.classList.add("buttonn");
+    cars.appendChild(removeEl);
+
+    removeEl.addEventListener("click", () => {
       cars.remove();
 
       if (this.contHolder.children.length === 0) {
@@ -185,23 +191,27 @@ class inputFilter extends Validate {
 
 class startRace extends inputFilter {
   namec: HTMLDivElement;
+  button: HTMLButtonElement;
 
   constructor() {
     super();
-
     this.namec = document.querySelector(".btnn")! as HTMLDivElement;
+    this.button = document.querySelector(".butn")! as HTMLButtonElement;
 
-    this.startRace();
+    this.button.addEventListener("click", this.elementManipulation.bind(this));
   }
-  private startRace() {
-    this.btn.addEventListener("click", () => {
-      this.btn.innerHTML = "Pocnite novu trku";
-      this.input.placeholder =
-        "Posele pocetka trke nije moguce pretrazivati nove vozace!";
-      this.input.classList.add("is-invalid");
-      this.namec.style.visibility = "hidden";
-    });
+
+  private elementManipulation() {
+    this.namec.style.visibility = "hidden";
+    this.input.placeholder =
+      "Posele pocetka trke nije moguce pretrazivati nove vozace!";
+    this.input.disabled = true;
+    this.input.classList.add("is-invalid");
+    // Ovde treba da pristupim removeEl el iz 174 linije koda
+    // i item iz 111
   }
 }
+
 const inpt = new startRace();
+
 const nameR = new nameRace(document.querySelector(".btnn")! as HTMLDivElement);

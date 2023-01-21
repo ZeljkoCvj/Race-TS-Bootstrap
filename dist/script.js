@@ -81,7 +81,7 @@ class inputFilter extends Validate {
                 });
                 if (inputText && this.filterItems) {
                     this.filterItems.map((item) => {
-                        const domElement = document.createElement("div");
+                        let domElement = document.createElement("div");
                         domElement.classList.add("car");
                         const front = document.createElement("div");
                         front.classList.add("front");
@@ -93,6 +93,7 @@ class inputFilter extends Validate {
                         back.innerHTML = `${item.brzina} km ${item.opis} <img src="${item.picture}">`;
                         this.dataContener.appendChild(domElement);
                         this.choseDriver(domElement, item);
+                        return { domElement, item };
                     });
                 }
             })
@@ -101,13 +102,13 @@ class inputFilter extends Validate {
             });
         }
     }
-    choseDriver(_domElement, item) {
-        _domElement.addEventListener("click", () => {
+    choseDriver(domElement, item) {
+        domElement.addEventListener("click", () => {
             this.btn.setAttribute("style", " visibility: visible;");
             this.dataContener.innerHTML = "";
             const carImg = document.createElement("img");
             carImg.src = item.picture;
-            const cars = document.createElement("p");
+            let cars = document.createElement("p");
             cars.style.transition = "1s";
             cars.classList.add("raceCar");
             cars.appendChild(carImg);
@@ -121,19 +122,20 @@ class inputFilter extends Validate {
                 }, 1500);
                 cars.remove();
             }
-            this.removeCar(cars);
             if (this.contHolder.children.length < 0) {
                 this.contHolder.style.display = "none";
                 this.contHolder.style.transition = "0s";
             }
+            this.removeCar(cars);
+            return cars;
         });
     }
     removeCar(cars) {
-        const removemvEl = document.createElement("button");
-        removemvEl.innerHTML = "x";
-        removemvEl.classList.add("buttonn");
-        cars.appendChild(removemvEl);
-        removemvEl.addEventListener("click", () => {
+        let removeEl = document.createElement("button");
+        removeEl.innerHTML = "x";
+        removeEl.classList.add("buttonn");
+        cars.appendChild(removeEl);
+        removeEl.addEventListener("click", () => {
             cars.remove();
             if (this.contHolder.children.length === 0) {
                 this.contHolder.style.visibility = "hidden";
@@ -147,16 +149,17 @@ class startRace extends inputFilter {
     constructor() {
         super();
         this.namec = document.querySelector(".btnn");
-        this.startRace();
+        this.button = document.querySelector(".butn");
+        this.button.addEventListener("click", this.elementManipulation.bind(this));
     }
-    startRace() {
-        this.btn.addEventListener("click", () => {
-            this.btn.innerHTML = "Pocnite novu trku";
-            this.input.placeholder =
-                "Posele pocetka trke nije moguce pretrazivati nove vozace!";
-            this.input.classList.add("is-invalid");
-            this.namec.style.visibility = "hidden";
-        });
+    elementManipulation() {
+        this.namec.style.visibility = "hidden";
+        this.input.placeholder =
+            "Posele pocetka trke nije moguce pretrazivati nove vozace!";
+        this.input.disabled = true;
+        this.input.classList.add("is-invalid");
+        // Ovde treba da pristupim removeEl el iz 174 linije koda
+        // i item iz 111
     }
 }
 const inpt = new startRace();
