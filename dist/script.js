@@ -61,11 +61,12 @@ class nameRace {
 class inputFilter extends Validate {
     constructor() {
         super(document.querySelector(".form-control"));
-        this.filterItems = this.filterItems;
+        this.filterItems = [];
         this.dataContener = document.querySelector(".contentHolder");
         this.contHolder = document.querySelector(".race");
         this.input.addEventListener("input", this.filterData.bind(this));
         this.btn = document.querySelector(".butn");
+        this.button = document.querySelector(".butn");
     }
     filterData() {
         this.dataContener.innerHTML = "";
@@ -93,7 +94,6 @@ class inputFilter extends Validate {
                         back.innerHTML = `${item.brzina} km ${item.opis} <img src="${item.picture}">`;
                         this.dataContener.appendChild(domElement);
                         this.choseDriver(domElement, item);
-                        return { domElement, item };
                     });
                 }
             })
@@ -107,7 +107,9 @@ class inputFilter extends Validate {
             this.btn.setAttribute("style", " visibility: visible;");
             this.dataContener.innerHTML = "";
             const carImg = document.createElement("img");
-            carImg.src = item.picture;
+            if (item.picture) {
+                carImg.src = item.picture;
+            }
             let cars = document.createElement("p");
             cars.style.transition = "1s";
             cars.classList.add("raceCar");
@@ -127,7 +129,6 @@ class inputFilter extends Validate {
                 this.contHolder.style.transition = "0s";
             }
             this.removeCar(cars);
-            return cars;
         });
     }
     removeCar(cars) {
@@ -143,13 +144,15 @@ class inputFilter extends Validate {
                 this.btn.style.visibility = "hidden";
             }
         });
+        this.button.addEventListener("click", () => {
+            removeEl.style.display = "none";
+        });
     }
 }
 class startRace extends inputFilter {
     constructor() {
         super();
         this.namec = document.querySelector(".btnn");
-        this.button = document.querySelector(".butn");
         this.button.addEventListener("click", this.elementManipulation.bind(this));
     }
     elementManipulation() {
@@ -158,8 +161,7 @@ class startRace extends inputFilter {
             "Posele pocetka trke nije moguce pretrazivati nove vozace!";
         this.input.disabled = true;
         this.input.classList.add("is-invalid");
-        // Ovde treba da pristupim removeEl el iz 174 linije koda
-        // i item iz 111
+        this.button.innerHTML = "Pocnite novu trku";
     }
 }
 const inpt = new startRace();

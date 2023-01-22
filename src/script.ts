@@ -1,9 +1,35 @@
-interface Car {
+interface Friend {
+  id: number;
   name: string;
-  picture: string;
-  brzina: number;
-  opis: string;
 }
+
+interface CarResponse {
+  _id: string;
+  index: number;
+  guid: string;
+  isActive: boolean;
+  balance: string;
+  picture: string;
+  age: number;
+  opis: string;
+  brzina: number;
+  eyeColor: string;
+  name: string;
+  gender: string;
+  company: string;
+  email: string;
+  phone: string;
+  address: string;
+  about: string;
+  registered: string;
+  latitude: number;
+  longitude: number;
+  tags: string[];
+  friends: Friend[];
+  greeting: string;
+  favoriteFruit: string;
+}
+
 class Validate {
   protected input: HTMLInputElement;
 
@@ -64,9 +90,9 @@ class nameRace {
   }
   private copyName() {
     let name = document.querySelectorAll(".list-group-item");
-    name.forEach((item: any) => {
+    name.forEach((item) => {
       item.addEventListener("click", () => {
-        navigator.clipboard.writeText(item.textContent);
+        navigator.clipboard.writeText(item.textContent!);
         this.element.innerHTML = "Text je kopiran";
         this.namec.style.display = "none";
 
@@ -82,12 +108,12 @@ class inputFilter extends Validate {
   protected dataContener: HTMLDivElement;
   protected contHolder: HTMLDivElement;
   protected btn: HTMLButtonElement;
+  button: HTMLButtonElement;
 
-  public filterItems: any;
+  public filterItems: Partial<CarResponse>[] = [];
 
   constructor() {
     super(document.querySelector(".form-control")! as HTMLInputElement);
-    this.filterItems = this.filterItems;
 
     this.dataContener = document.querySelector(
       ".contentHolder"
@@ -95,6 +121,7 @@ class inputFilter extends Validate {
     this.contHolder = document.querySelector(".race")! as HTMLDivElement;
     this.input.addEventListener("input", this.filterData.bind(this));
     this.btn = document.querySelector(".butn")! as HTMLButtonElement;
+    this.button = document.querySelector(".butn")! as HTMLButtonElement;
   }
 
   public filterData() {
@@ -107,12 +134,13 @@ class inputFilter extends Validate {
         .then((response: Response) => {
           return response.json();
         })
-        .then((data: any) => {
-          this.filterItems = data.filter((item: Car) => {
-            return item.name.toLowerCase().includes(inputText);
+
+        .then((data: Array<Partial<CarResponse>>) => {
+          this.filterItems = data.filter((item: Partial<CarResponse>) => {
+            return item.name!.toLowerCase().includes(inputText);
           });
           if (inputText && this.filterItems) {
-            this.filterItems.map((item: Car) => {
+            this.filterItems.map((item: Partial<CarResponse>) => {
               let domElement = document.createElement("div");
               domElement.classList.add("car");
               const front = document.createElement("div");
@@ -124,8 +152,7 @@ class inputFilter extends Validate {
               front.innerHTML = `${item.name} <img src="${item.picture}">`;
               back.innerHTML = `${item.brzina} km ${item.opis} <img src="${item.picture}">`;
               this.dataContener.appendChild(domElement);
-              this.choseDriver(domElement, item);
-              return { domElement, item };
+              this.choseDriver(domElement, item!);
             });
           }
         })
@@ -135,13 +162,15 @@ class inputFilter extends Validate {
     }
   }
 
-  public choseDriver(domElement: HTMLDivElement, item: Car) {
+  public choseDriver(domElement: HTMLDivElement, item: Partial<CarResponse>) {
     domElement.addEventListener("click", () => {
       this.btn.setAttribute("style", " visibility: visible;");
       this.dataContener.innerHTML = "";
-      const carImg = document.createElement("img");
+      const carImg = document.createElement("img")! as HTMLImageElement;
+      if (item.picture) {
+        carImg.src = item.picture;
+      }
 
-      carImg.src = item.picture;
       let cars = document.createElement("p");
 
       cars.style.transition = "1s";
@@ -166,7 +195,6 @@ class inputFilter extends Validate {
         this.contHolder.style.transition = "0s";
       }
       this.removeCar(cars);
-      return cars;
     });
   }
 
@@ -186,17 +214,18 @@ class inputFilter extends Validate {
         this.btn.style.visibility = "hidden";
       }
     });
+    this.button.addEventListener("click", () => {
+      removeEl.style.display = "none";
+    });
   }
 }
 
 class startRace extends inputFilter {
   namec: HTMLDivElement;
-  button: HTMLButtonElement;
 
   constructor() {
     super();
     this.namec = document.querySelector(".btnn")! as HTMLDivElement;
-    this.button = document.querySelector(".butn")! as HTMLButtonElement;
 
     this.button.addEventListener("click", this.elementManipulation.bind(this));
   }
@@ -207,8 +236,7 @@ class startRace extends inputFilter {
       "Posele pocetka trke nije moguce pretrazivati nove vozace!";
     this.input.disabled = true;
     this.input.classList.add("is-invalid");
-    // Ovde treba da pristupim removeEl el iz 174 linije koda
-    // i item iz 111
+    this.button.innerHTML = "Pocnite novu trku";
   }
 }
 

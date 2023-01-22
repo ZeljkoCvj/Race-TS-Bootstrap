@@ -1,3 +1,4 @@
+@import "toastify-js/src/toastify.css";
 .container {
   position: relative;
 }
@@ -65,7 +66,7 @@
 
 .car {
   transform-style: preserve-3d;
-  transition: all 2s ease;
+
   position: relative;
   text-align: center;
   font-size: 25px;
