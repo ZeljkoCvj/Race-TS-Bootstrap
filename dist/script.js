@@ -61,11 +61,13 @@ class nameRace {
 class inputFilter extends Validate {
     constructor() {
         super(document.querySelector(".form-control"));
+        this.carsForRace = [];
         this.filterItems = [];
+        this.brojac = 0;
+        this.notification = document.querySelector("#notification");
         this.dataContener = document.querySelector(".contentHolder");
         this.contHolder = document.querySelector(".race");
         this.input.addEventListener("input", this.filterData.bind(this));
-        this.btn = document.querySelector(".butn");
         this.button = document.querySelector(".butn");
     }
     filterData() {
@@ -103,67 +105,22 @@ class inputFilter extends Validate {
         }
     }
     choseDriver(domElement, item) {
+        let cars = document.querySelector(".raceCar");
         domElement.addEventListener("click", () => {
-            this.btn.setAttribute("style", " visibility: visible;");
-            this.dataContener.innerHTML = "";
-            const carImg = document.createElement("img");
-            if (item.picture) {
-                carImg.src = item.picture;
-            }
-            let cars = document.createElement("p");
-            cars.style.transition = "1s";
-            cars.classList.add("raceCar");
-            cars.appendChild(carImg);
-            this.contHolder.setAttribute("style", " visibility: visible;");
-            this.contHolder.appendChild(cars);
-            this.input.value = "";
-            if (this.contHolder.children.length === 6) {
-                document.getElementById("notification").style.display = "block";
+            this.brojac++;
+            this.carsForRace.push(item);
+            new DomManipulation(filter.carsForRace, item);
+            if (this.brojac > 3) {
+                this.notification.style.display = "block";
                 setTimeout(() => {
-                    document.getElementById("notification").style.display = "none";
-                }, 1500);
+                    this.notification.style.display = "none";
+                }, 2000);
                 cars.remove();
             }
-            if (this.contHolder.children.length < 0) {
-                this.contHolder.style.display = "none";
-                this.contHolder.style.transition = "0s";
-            }
-            this.removeCar(cars);
-        });
-    }
-    removeCar(cars) {
-        let removeEl = document.createElement("button");
-        removeEl.innerHTML = "x";
-        removeEl.classList.add("buttonn");
-        cars.appendChild(removeEl);
-        removeEl.addEventListener("click", () => {
-            cars.remove();
-            if (this.contHolder.children.length === 0) {
-                this.contHolder.style.visibility = "hidden";
-                this.contHolder.style.transition = "0s";
-                this.btn.style.visibility = "hidden";
-            }
-        });
-        this.button.addEventListener("click", () => {
-            removeEl.style.display = "none";
+            this.input.value = "";
         });
     }
 }
-class startRace extends inputFilter {
-    constructor() {
-        super();
-        this.namec = document.querySelector(".btnn");
-        this.button.addEventListener("click", this.elementManipulation.bind(this));
-    }
-    elementManipulation() {
-        this.namec.style.visibility = "hidden";
-        this.input.placeholder =
-            "Posele pocetka trke nije moguce pretrazivati nove vozace!";
-        this.input.disabled = true;
-        this.input.classList.add("is-invalid");
-        this.button.innerHTML = "Pocnite novu trku";
-    }
-}
-const inpt = new startRace();
+const filter = new inputFilter();
 const nameR = new nameRace(document.querySelector(".btnn"));
 //# sourceMappingURL=script.js.map

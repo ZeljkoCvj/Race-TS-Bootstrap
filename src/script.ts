@@ -2,6 +2,10 @@ interface Friend {
   id: number;
   name: string;
 }
+interface Data {
+  speed: number;
+  image: string;
+}
 
 interface CarResponse {
   _id: string;
@@ -107,20 +111,23 @@ class nameRace {
 class inputFilter extends Validate {
   protected dataContener: HTMLDivElement;
   protected contHolder: HTMLDivElement;
-  protected btn: HTMLButtonElement;
+  notification: HTMLDivElement;
   button: HTMLButtonElement;
+  carsForRace: Partial<CarResponse>[] = [];
 
   public filterItems: Partial<CarResponse>[] = [];
-
+  brojac = 0;
   constructor() {
     super(document.querySelector(".form-control")! as HTMLInputElement);
-
+    this.notification = document.querySelector(
+      "#notification"
+    )! as HTMLDivElement;
     this.dataContener = document.querySelector(
       ".contentHolder"
     )! as HTMLDivElement;
     this.contHolder = document.querySelector(".race")! as HTMLDivElement;
     this.input.addEventListener("input", this.filterData.bind(this));
-    this.btn = document.querySelector(".butn")! as HTMLButtonElement;
+
     this.button = document.querySelector(".butn")! as HTMLButtonElement;
   }
 
@@ -163,83 +170,23 @@ class inputFilter extends Validate {
   }
 
   public choseDriver(domElement: HTMLDivElement, item: Partial<CarResponse>) {
+    let cars = document.querySelector(".raceCar")! as HTMLParagraphElement;
     domElement.addEventListener("click", () => {
-      this.btn.setAttribute("style", " visibility: visible;");
-      this.dataContener.innerHTML = "";
-      const carImg = document.createElement("img")! as HTMLImageElement;
-      if (item.picture) {
-        carImg.src = item.picture;
-      }
-
-      let cars = document.createElement("p");
-
-      cars.style.transition = "1s";
-      cars.classList.add("raceCar");
-      cars.appendChild(carImg);
-
-      this.contHolder.setAttribute("style", " visibility: visible;");
-      this.contHolder.appendChild(cars);
-
-      this.input.value = "";
-      if (this.contHolder.children.length === 6) {
-        document.getElementById("notification")!.style.display = "block";
-
+      this.brojac++;
+      this.carsForRace.push(item);
+      new DomManipulation(filter.carsForRace, item);
+      if (this.brojac > 3) {
+        this.notification.style.display = "block";
         setTimeout(() => {
-          document.getElementById("notification")!.style.display = "none";
-        }, 1500);
+          this.notification.style.display = "none";
+        }, 2000);
+
         cars.remove();
       }
-
-      if (this.contHolder.children.length < 0) {
-        this.contHolder.style.display = "none";
-        this.contHolder.style.transition = "0s";
-      }
-      this.removeCar(cars);
-    });
-  }
-
-  public removeCar(cars: HTMLParagraphElement) {
-    let removeEl = document.createElement("button");
-
-    removeEl.innerHTML = "x";
-    removeEl.classList.add("buttonn");
-    cars.appendChild(removeEl);
-
-    removeEl.addEventListener("click", () => {
-      cars.remove();
-
-      if (this.contHolder.children.length === 0) {
-        this.contHolder.style.visibility = "hidden";
-        this.contHolder.style.transition = "0s";
-        this.btn.style.visibility = "hidden";
-      }
-    });
-    this.button.addEventListener("click", () => {
-      removeEl.style.display = "none";
+      this.input.value = "";
     });
   }
 }
 
-class startRace extends inputFilter {
-  namec: HTMLDivElement;
-
-  constructor() {
-    super();
-    this.namec = document.querySelector(".btnn")! as HTMLDivElement;
-
-    this.button.addEventListener("click", this.elementManipulation.bind(this));
-  }
-
-  private elementManipulation() {
-    this.namec.style.visibility = "hidden";
-    this.input.placeholder =
-      "Posele pocetka trke nije moguce pretrazivati nove vozace!";
-    this.input.disabled = true;
-    this.input.classList.add("is-invalid");
-    this.button.innerHTML = "Pocnite novu trku";
-  }
-}
-
-const inpt = new startRace();
-
+const filter = new inputFilter();
 const nameR = new nameRace(document.querySelector(".btnn")! as HTMLDivElement);
